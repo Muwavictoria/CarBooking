@@ -1,0 +1,61 @@
+
+.content-wrapper {
+    margin-left: 240px;
+    margin-top: 65px;
+    transition: .5s;
+}
+.content-wrapper.hide {
+    margin-left: 0;
+}
+.top-chart-earn {
+    border-radius: 5px;
+    padding-top: 13px;
+    box-shadow: -2px 3px 13px 0px #dddddd5e;
+}
+.last-month {
+    line-height: 20px;
+    text-align: center;
+}
+
+.last-month p {
+    font-size: 12px;
+    color: #777;
+}
+
+.last-month h5 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.earn {
+    margin: 12px 0;
+}
+
+.earn h2 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.chart-nav.active {
+    background-color: #fff !important;
+    background: #fff;
+    color: var(--main-color) !important;
+    border-bottom: 2px solid var(--main-color);
+    border-radius: 0;
+}
+.chart-nav:hover {
+    color: var(--main-color);
+}
+
+
+.chart-nav {
+    padding: 0 15px;
+    transition: .3s;
+    border-radius: 0;
+}
+
+.chart-header-tab{
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+}

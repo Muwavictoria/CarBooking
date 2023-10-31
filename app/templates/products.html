@@ -1,0 +1,328 @@
+{% extends "base.html"%}
+
+
+{% block title %}
+Tables
+{% endblock%}
+
+{% block content %}
+<div class="container-fluid">
+  <h1 class="text-center alert-danger">
+    CAR CRUD
+  </h1>
+  <div class="row">
+    <div class="col-sm-2"></div>
+
+    <!-- content starts here -->
+    <div class="col-sm-8">
+      <h2>Car List <button  class="btn ml-auto btn-primary pull-right" data-toggle="modal" data-target="#myModal" >ADD CAR</button></h2>
+      
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" arial-label="close">
+          <span arial-hidden="true">&times;</span>
+          {{msg}}
+        </button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+
+      <!-- table for displaying fetched car } -->
+      <table class="table car" style="border: 1px solid black;">
+        <thead>
+         <tr>
+              <th scope="col">Car</th>
+             <th scope="col">Number Plate</th>
+             <th scope="col">Car Name</th>
+             <th scope="col">Brand</th>
+             <th scope="col">Color</th>
+             <th scope="col">Description</th>
+             <th scope="col">Price</th>
+             <th scope="col">Seats</th>
+             <th scope="col">Actions</th>
+             
+         </tr>
+        </thead>
+        <tbody>
+          {% for car in car%}
+         <tr>
+             <td scope="col">
+              <img src="{{car.image}}" alt="{{ car.car_name }}" height="23px" width="23px">
+                
+              </td>
+             <td scope="col">{{ car.number_plate}}</td>
+             <td scope="col">{{ car.car_name}}</td>
+             <td scope="col">{{ car.brand}}</td>
+             <td scope="col">{{ car.color}}</td>
+             <td scope="col">{{car.description}}</td>
+             <td scope="col">{{ car.price}}</td>
+             <td scope="col">{{ car.seats}}</td>
+             
+             <td>
+              <button  class="btn btn-sm btn-warning pull-right" data-toggle="modal" data-target="#modalUpdate{{ car.number_plate }}" >Edit</button>
+              <button  class="btn btn-sm btn-danger pull-right" data-toggle="modal" data-number-plate="{{ car.number_plate }}" data-target="#modalDelete{{ car.number_plate }}">Delete</button>
+             </td>
+         </tr>
+         {% endfor %}
+         
+      </tbody>
+     
+     
+    </table>
+        
+         
+        {% for car in car%}
+         <!--start for Enter a New Car Modal  -->
+         <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-primary text-center">
+                  Please add New car
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                
+              </div>
+              <div class="modal-body">
+                <form action="/addproduct" method="post" enctype="multipart/form-data">
+                  <div class="">
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">CarImage</label>
+                      <input class="form-control" type="file" name="image" id="formFile">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="numberplate">Number Plate</label>
+                      <input type="text" class="form-control" name="numberplate" id="numberplate" placeholder="Number plate">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="Carname">Car Name</label>
+                      <input type="text" class="form-control" name="carname" id="carname" placeholder="Car Name">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="Brand">Brand</label>
+                      <input type="text" class="form-control" name="brand" id="brand" placeholder="Brand">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="color">Color</label>
+                      <input type="text" class="form-control" name="color" id="color" placeholder="Color">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="description">Description</label>
+                      <input type="text" class="form-control" name="description" id="descrip" placeholder="Description">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="price">Price</label>
+                      <input type="text" class="form-control" name="price" id="price" placeholder="Price">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="seats">Seats</label>
+                      <input type="text" class="form-control" name="seats" id="Seats" placeholder="Seats">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">SAVE</button>
+                  <div class="msg">
+                      {{ msg }}
+                  </div>
+                </form>
+
+              </div>
+
+            </div>
+          </div>
+
+         </div>
+         <!--end for Enter a New Car Modal  -->
+         {% endfor %}
+
+         {% for car in car%} 
+        <!--start for Update a Cars Modal  -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalUpdate{{ car.number_plate }}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>
+                  <img src="{{car.image}}" alt="{{car.car_name}}" height="50px", width="50px">
+                </p>
+                <form action="/update/{{car.number_plate}}" method="post">
+                  <div class="">
+                    <div class="form-group col-sm">
+                      <label for="numberplate">Number Plate</label>
+                      <input type="text" class="form-control" value="{{car.number_plate}}" name="numberplate" id="numberplate" placeholder="Number plate">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="Carname">Car Name</label>
+                      <input type="text" class="form-control" value="{{car.car_name }}" name="new_carname" id="carname" placeholder="Car Name">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="Brand">Brand</label>
+                      <input type="text" class="form-control" value="{{car.brand}}" name="new_brand" id="brand" placeholder="Brand">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="color">Color</label>
+                      <input type="text" class="form-control" value="{{car.color}}" name="new_color" id="color" placeholder="Color">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="description">Description</label>
+                      <input type="text" class="form-control" value="{{car.description}}" name="new_description" id="descrip" placeholder="Description">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="price">Price</label>
+                      <input type="text" class="form-control" value="{{car.price}}" name="new_price" id="price" placeholder="Price">
+                    </div>
+                    <div class="form-group col-sm">
+                      <label for="seats">Seats</label>
+                      <input type="text" class="form-control" value="{{car.seats}}" name="new_seats" id="Seats" placeholder="Seats">
+                    </div>
+                  </div>  
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">UPDATE PRODUCTS</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+        <!--end for Update a Cars Modal  -->
+        {% endfor %}
+        
+      
+
+        {% for car in car%}
+         <!--start for Delete a Cars Modal  -->
+        <div class="modal" tabindex="-1" role="dialog" id="modalDelete{{ car.number_plate }}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Are sure you want to delete Car</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Number Plate: {{ car.number_plate }}</p>
+                <p>Car Name: {{ car.car_name }}</p>
+                <p>Color: {{ car.color }}</p>
+                <p>Description: {{ car.description }}</p>
+                <p>Price: {{ car.price }}</p>
+                <p>Seats: {{ car.seats }}</p>
+              </div>
+              <div class="modal-footer">
+                <form action="/delete/{{car.number_plate}}" type="submit"> 
+                  <button type="submit" class="btn btn-primary">DELETE</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--end for Delete a Cars Modal  -->
+        {% endfor %}
+        
+        
+       
+
+
+
+    </div>
+    <!-- content starts here -->
+    <div class="col-sm-2"></div>
+    
+  </div>
+
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+<form action="{{url_for('add_products')}}" method="post">
+  <div class="form-row row">
+    <div class="form-group col-sm">
+      <label for="numberplate">Number Plate</label>
+      <input type="text" class="form-control" name="numberplate" id="numberplate" placeholder="Number plate">
+    </div>
+    <div class="form-group col-sm">
+      <label for="Carname">Car Name</label>
+      <input type="text" class="form-control" name="carname" id="carname" placeholder="Car Name">
+    </div>
+    <div class="form-group col-sm">
+      <label for="Brand">Brand</label>
+      <input type="text" class="form-control" name="brand" id="brand" placeholder="Brand">
+    </div>
+    <div class="form-group col-sm">
+      <label for="color">Color</label>
+      <input type="text" class="form-control" name="color" id="color" placeholder="Color">
+    </div>
+    <div class="form-group col-sm">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" name="description" id="descrip" placeholder="Description">
+    </div>
+    <div class="form-group col-sm">
+      <label for="price">Price</label>
+      <input type="text" class="form-control" name="price" id="price" placeholder="Price">
+    </div>
+    <div class="form-group col-sm">
+      <label for="seats">Seats</label>
+      <input type="text" class="form-control" name="seats" id="Seats" placeholder="Seats">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">ADD PRODUCTS</button>
+  <div class="msg">
+      {{ msg }}
+  </div>
+</form>
+
+
+
+
+
+<table class="table" style="border: 1px solid black;">
+ <thead>
+  <tr>
+      <th>Number Plate</th>
+      <th>Car Name</th>
+      <th>Brand</th>
+      <th>Color</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Seats</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+      <td>UBA 444</td>
+      <td>kulga L</td>
+      <td>toyota</td>
+      <td>black</td>
+      <td>fast</td>
+      <td>10000</td>
+      <td>4</td>
+  </tr>
+ </tbody>
+
+
+</table>
+
+<div class="cars">
+  my car is 
+</div>
